@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#4f46e5">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MyLife">
+  <meta name="description" content="Personal health tracking PWA">
+  <title>MyLife</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============================== APP BAR ============================== -->
+  <header class="app-bar" id="app-bar">
+    <h1 class="app-bar__title">MyLife</h1>
+    <span class="app-bar__date" id="app-bar-date"></span>
+    <button class="app-bar__theme-toggle" id="btn-theme-toggle" aria-label="Toggle dark mode">
+      <svg class="icon icon-sun" id="icon-sun" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+      <svg class="icon icon-moon" id="icon-moon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+  </header>
+
+  <!-- ============================== MAIN CONTENT ============================== -->
+  <main class="pages-container" id="pages-container">
+
+    <!-- ==================== PAGE: DASHBOARD ==================== -->
+    <section class="page active" id="page-dashboard" data-page="dashboard">
+
+      <!-- Greeting -->
+      <div class="dashboard-greeting">
+        <h2 id="greeting-text">Good morning, User</h2>
+        <p id="greeting-date"></p>
+      </div>
+
+      <!-- Day Picker -->
+      <div class="day-picker">
+        <button class="day-picker__arrow" id="day-prev" aria-label="Previous day">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span class="day-picker__label" id="day-picker-label">Today</span>
+        <button class="day-picker__arrow" id="day-next" aria-label="Next day">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+
+      <!-- Metric Cards -->
+      <div class="metric-grid">
+        <article class="metric-card">
+          <div class="metric-card__icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18M5.5 5.5l13 13M18.5 5.5l-13 13"/></svg>
+          </div>
+          <div class="metric-card__body">
+            <span class="metric-card__label">Weight</span>
+            <span class="metric-card__value" id="val-weight">--</span>
+            <span class="metric-card__unit">kg</span>
+          </div>
+        </article>
+
+        <article class="metric-card">
+          <div class="metric-card__icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </div>
+          <div class="metric-card__body">
+            <span class="metric-card__label">Sleep</span>
+            <span class="metric-card__value" id="val-sleep">--</span>
+            <span class="metric-card__unit">hours</span>
+          </div>
+        </article>
+
+        <article class="metric-card">
+          <div class="metric-card__icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+          </div>
+          <div class="metric-card__body">
+            <span class="metric-card__label">Calories</span>
+            <span class="metric-card__value" id="val-calories">--</span>
+            <span class="metric-card__unit">kcal</span>
+          </div>
+        </article>
+
+        <article class="metric-card">
+          <div class="metric-card__icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+          </div>
+          <div class="metric-card__body">
+            <span class="metric-card__label">Water</span>
+            <span class="metric-card__value" id="val-water">--</span>
+            <span class="metric-card__unit">ml</span>
+          </div>
+        </article>
+
+        <article class="metric-card">
+          <div class="metric-card__icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+          </div>
+          <div class="metric-card__body">
+            <span class="metric-card__label">Mood</span>
+            <span class="metric-card__value" id="val-mood">--</span>
+          </div>
+        </article>
+
+        <article class="metric-card">
+          <div class="metric-card__icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div class="metric-card__body">
+            <span class="metric-card__label">Habits</span>
+            <span class="metric-card__value" id="val-habits-pct">--</span>
+            <span class="metric-card__unit">%</span>
+          </div>
+        </article>
+      </div>
+
+      <!-- Quick-Log Buttons -->
+      <div class="quick-log-row">
+        <button class="btn btn--quick" id="btn-quick-meal" aria-label="Quick add meal">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><line x1="7" y1="2" x2="7" y2="22"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>
+          <span>+ Meal</span>
+        </button>
+        <button class="btn btn--quick" id="btn-quick-water" aria-label="Quick add water">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+          <span>+ Water</span>
+        </button>
+        <button class="btn btn--quick" id="btn-quick-weight" aria-label="Quick add weight">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18M5.5 5.5l13 13M18.5 5.5l-13 13"/></svg>
+          <span>+ Weight</span>
+        </button>
+      </div>
+
+      <!-- Mini Habit Checklist -->
+      <section class="section-block">
+        <h3 class="section-block__title">Today's Habits</h3>
+        <ul class="habit-mini-list" id="dashboard-habits">
+          <li class="empty-state">No habits yet. Add some in the Habits tab.</li>
+        </ul>
+      </section>
+
+      <!-- Trend Charts -->
+      <section class="section-block">
+        <h3 class="section-block__title">Trends</h3>
+        <div class="chart-container">
+          <canvas id="chart-weight"></canvas>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart-mood"></canvas>
+        </div>
+      </section>
+
+    </section>
+
+    <!-- ==================== PAGE: TRACK ==================== -->
+    <section class="page" id="page-track" data-page="track">
+
+      <!-- Sub-tabs bar -->
+      <nav class="sub-tabs" id="track-subtabs" aria-label="Tracking categories">
+        <button class="sub-tab active" data-subtab="health">Health</button>
+        <button class="sub-tab" data-subtab="fitness">Fitness</button>
+        <button class="sub-tab" data-subtab="nutrition">Nutrition</button>
+        <button class="sub-tab" data-subtab="sleep">Sleep</button>
+        <button class="sub-tab" data-subtab="mind">Mind</button>
+      </nav>
+
+      <!-- ---- HEALTH SUB-TAB ---- -->
+      <div class="sub-page active" id="track-health" data-subtab-content="health">
+
+        <!-- Vitals Form -->
+        <form class="form-card" id="form-weight" autocomplete="off">
+          <h3 class="form-card__title">Vitals</h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="input-weight">Weight (kg)</label>
+              <input type="number" id="input-weight" inputmode="decimal" step="0.1" min="20" max="300" placeholder="70.0">
+            </div>
+          </div>
+
+          <div class="form-row form-row--2col">
+            <div class="form-group">
+              <label for="input-bp-systolic">BP Systolic</label>
+              <input type="number" id="input-bp-systolic" inputmode="numeric" min="60" max="250" placeholder="120">
+            </div>
+            <div class="form-group">
+              <label for="input-bp-diastolic">BP Diastolic</label>
+              <input type="number" id="input-bp-diastolic" inputmode="numeric" min="40" max="150" placeholder="80">
+            </div>
+          </div>
+
+          <div class="form-row form-row--2col">
+            <div class="form-group">
+              <label for="input-heart-rate">Heart Rate (bpm)</label>
+              <input type="number" id="input-heart-rate" inputmode="numeric" min="30" max="220" placeholder="72">
+            </div>
+            <div class="form-group">
+              <label for="input-blood-sugar">Blood Sugar (mg/dL)</label>
+              <input type="number" id="input-blood-sugar" inputmode="decimal" step="0.1" min="20" max="600" placeholder="90">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="input-vitals-notes">Notes</label>
+              <textarea id="input-vitals-notes" rows="2" placeholder="Any notes..."></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn--primary">Save Vitals</button>
+        </form>
+
+        <!-- Medication Tracker -->
+        <section class="section-block">
+          <div class="section-block__header">
+            <h3 class="section-block__title">Medications</h3>
+            <button class="btn btn--icon" id="btn-add-medication" aria-label="Add medication">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+          </div>
+          <ul class="list" id="medication-list">
+            <li class="empty-state">No medications tracked.</li>
+          </ul>
+        </section>
+
+        <!-- Appointments -->
+        <section class="section-block">
+          <div class="section-block__header">
+            <h3 class="section-block__title">Appointments</h3>
+            <button class="btn btn--icon" id="btn-add-appointment" aria-label="Add appointment">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+          </div>
+          <ul class="list" id="appointment-list">
+            <li class="empty-state">No upcoming appointments.</li>
+          </ul>
+        </section>
+
+      </div>
+
+      <!-- ---- FITNESS SUB-TAB ---- -->
+      <div class="sub-page" id="track-fitness" data-subtab-content="fitness">
+
+        <form class="form-card" id="form-workout" autocomplete="off">
+          <h3 class="form-card__title">Log Workout</h3>
+
+          <div class="form-row form-row--2col">
+            <div class="form-group">
+              <label for="input-workout-type">Type</label>
+              <select id="input-workout-type">
+                <option value="strength">Strength</option>
+                <option value="cardio">Cardio</option>
+                <option value="flexibility">Flexibility</option>
+                <option value="sports">Sports</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="input-exercise-name">Exercise Name</label>
+              <input type="text" id="input-exercise-name" placeholder="e.g. Bench Press">
+            </div>
+          </div>
+
+          <div class="form-row form-row--2col">
+            <div class="form-group">
+              <label for="input-workout-duration">Duration (min)</label>
+              <input type="number" id="input-workout-duration" inputmode="numeric" min="1" max="600" placeholder="30">
+            </div>
+            <div class="form-group">
+              <label for="input-workout-sets">Sets</label>
+              <input type="number" id="input-workout-sets" inputmode="numeric" min="1" max="100" placeholder="3">
+            </div>
+          </div>
+
+          <div class="form-row form-row--2col">
+            <div class="form-group">
+              <label for="input-workout-reps">Reps</label>
+              <input type="number" id="input-workout-reps" inputmode="numeric" min="1" max="500" placeholder="10">
+            </div>
+            <div class="form-group">
+              <label for="input-workout-weight">Weight (kg)</label>
+              <input type="number" id="input-workout-weight" inputmode="decimal" step="0.5" min="0" max="500" placeholder="0">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="input-workout-notes">Notes</label>
+              <textarea id="input-workout-notes" rows="2" placeholder="Workout notes..."></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn--primary">Log Workout</button>
+        </form>
+
+        <section class="section-block">
+          <h3 class="section-block__title">Recent Workouts</h3>
+          <ul class="list" id="workout-history">
+            <li class="empty-state">No workouts logged yet.</li>
+          </ul>
+        </section>
+
+      </div>
+
+      <!-- ---- NUTRITION SUB-TAB ---- -->
+      <div class="sub-page" id="track-nutrition" data-subtab-content="nutrition">
+
+        <!-- Food Search -->
+        <div class="search-box">
+          <svg class="search-box__icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="search" class="search-box__input" id="input-food-search" placeholder="Search food database..." autocomplete="off">
+        </div>
+        <ul class="list" id="food-results"></ul>
+
+        <!-- Meal Log Form -->
+        <form class="form-card" id="form-meal" autocomplete="off">
+          <h3 class="form-card__title">Log Meal</h3>
+
+          <div class="form-row form-row--2col">
+            <div class="form-group">
+              <label for="input-meal-type">Meal</label>
+              <select id="input-meal-type">
+                <option value="breakfast">Breakfast</option>
+                <option value="lunch">Lunch</option>
+                <option value="dinner">Dinner</option>
+                <option value="snack">Snack</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="input-food-name">Food Name</label>
+              <input type="text" id="input-food-name" placeholder="e.g. Grilled Chicken">
+            </div>
+          </div>
+
+          <div class="form-row form-row--3col">
+            <div class="form-group">
+              <label for="input-meal-calories">Calories</label>
+              <input type="number" id="input-meal-calories" inputmode="numeric" min="0" max="5000" placeholder="250">
+            </div>
+            <div class="form-group">
+              <label for="input-meal-protein">Protein (g)</label>
+              <input type="number" id="input-meal-protein" inputmode="decimal" step="0.1" min="0" max="500" placeholder="20">
+            </div>
+            <div class="form-group">
+              <label for="input-meal-carbs">Carbs (g)</label>
+              <input type="number" id="input-meal-carbs" inputmode="decimal" step="0.1" min="0" max="500" placeholder="30">
+            </div>
+          </div>
+
+          <div class="form-row form-row--2col">
+            <div class="form-group">
+              <label for="input-meal-fat">Fat (g)</label>
+              <input type="number" id="input-meal-fat" inputmode="decimal" step="0.1" min="0" max="300" placeholder="10">
+            </div>
+            <div class="form-group">
+              <label for="input-meal-fiber">Fiber (g)</label>
+              <input type="number" id="input-meal-fiber" inputmode="decimal" step="0.1" min="0" max="100" placeholder="5">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn--primary">Log Meal</button>
+        </form>
+
+        <!-- Today's Meals -->
+        <section class="section-block">
+          <h3 class="section-block__title">Today's Meals</h3>
+          <ul class="list" id="meal-list">
+            <li class="empty-state">No meals logged today.</li>
+          </ul>
+        </section>
+
+        <!-- Macros Chart -->
+        <section class="section-block">
+          <h3 class="section-block__title">Macros Breakdown</h3>
+          <div class="chart-container chart-container--small">
+            <canvas id="chart-macros"></canvas>
+          </div>
+        </section>
+
+        <!-- Calorie Summary -->
+        <section class="section-block">
+          <h3 class="section-block__title">Calorie Summary</h3>
+          <div class="chart-container chart-container--small">
+            <canvas id="chart-calories"></canvas>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- ---- SLEEP SUB-TAB ---- -->
+      <div class="sub-page" id="track-sleep" data-subtab-content="sleep">
+
+        <form class="form-card" id="form-sleep" autocomplete="off">
+          <h3 class="form-card__title">Log Sleep</h3>
+
+          <div class="form-row form-row--2col">
+            <div class="form-group">
+              <label for="input-bedtime">Bedtime</label>
+              <input type="time" id="input-bedtime" value="23:00">
+            </div>
+            <div class="form-group">
+              <label for="input-waketime">Wake Time</label>
+              <input type="time" id="input-waketime" value="07:00">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="input-sleep-quality">Sleep Quality: <span id="sleep-quality-val">3</span>/5</label>
+              <input type="range" id="input-sleep-quality" min="1" max="5" step="1" value="3">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="input-sleep-notes">Notes</label>
+              <textarea id="input-sleep-notes" rows="2" placeholder="How did you sleep?"></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn--primary">Log Sleep</button>
+        </form>
+
+        <section class="section-block">
+          <h3 class="section-block__title">Sleep Trends</h3>
+          <div class="chart-container">
+            <canvas id="chart-sleep"></canvas>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- ---- MIND SUB-TAB ---- -->
+      <div class="sub-page" id="track-mind" data-subtab-content="mind">
+
+        <!-- Mood Form -->
+        <form class="form-card" id="form-mood" autocomplete="off">
+          <h3 class="form-card__title">How are you feeling?</h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Mood</label>
+              <div class="mood-picker" id="mood-picker">
+                <button type="button" class="mood-btn" data-mood="1" aria-label="Very sad">&#x1F622;</button>
+                <button type="button" class="mood-btn" data-mood="2" aria-label="Sad">&#x1F615;</button>
+                <button type="button" class="mood-btn" data-mood="3" aria-label="Neutral">&#x1F610;</button>
+                <button type="button" class="mood-btn" data-mood="4" aria-label="Happy">&#x1F642;</button>
+                <button type="button" class="mood-btn" data-mood="5" aria-label="Very happy">&#x1F60A;</button>
+              </div>
+              <input type="hidden" id="input-mood-value" name="mood" value="">
+            </div>
+          </div>
+
+          <div class="form-row form-row--2col">
+            <div class="form-group">
+              <label for="input-stress">Stress: <span id="stress-val">5</span>/10</label>
+              <input type="range" id="input-stress" min="1" max="10" step="1" value="5">
+            </div>
+            <div class="form-group">
+              <label for="input-energy">Energy: <span id="energy-val">5</span>/10</label>
+              <input type="range" id="input-energy" min="1" max="10" step="1" value="5">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="input-gratitude">Gratitude</label>
+              <textarea id="input-gratitude" rows="3" placeholder="What are you grateful for today?"></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn--primary">Save Mood</button>
+        </form>
+
+        <!-- Meditation Timer -->
+        <section class="section-block">
+          <h3 class="section-block__title">Meditation</h3>
+          <div class="meditation-timer">
+            <div class="meditation-timer__display" id="meditation-display">00:00</div>
+            <div class="meditation-timer__controls">
+              <select id="input-meditation-type" class="meditation-timer__type">
+                <option value="breathing">Breathing</option>
+                <option value="mindfulness">Mindfulness</option>
+                <option value="body-scan">Body Scan</option>
+                <option value="loving-kindness">Loving Kindness</option>
+                <option value="unguided">Unguided</option>
+              </select>
+              <button type="button" class="btn btn--primary" id="btn-meditation-toggle">Start</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Meditation Log -->
+        <section class="section-block">
+          <h3 class="section-block__title">Meditation Log</h3>
+          <ul class="list" id="meditation-log">
+            <li class="empty-state">No meditation sessions logged.</li>
+          </ul>
+        </section>
+
+      </div>
+
+    </section>
+
+    <!-- ==================== PAGE: HABITS ==================== -->
+    <section class="page" id="page-habits" data-page="habits">
+
+      <div class="page-header">
+        <h2 class="page-header__title">Habits</h2>
+        <span class="page-header__date" id="habits-date"></span>
+      </div>
+
+      <!-- Habit Checklist -->
+      <section class="section-block">
+        <div class="section-block__header">
+          <h3 class="section-block__title">Today's Habits</h3>
+          <button class="btn btn--icon" id="btn-add-habit" aria-label="Add habit">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+        <ul class="habit-list" id="habits-list">
+          <li class="empty-state">No habits created yet. Tap + to add one.</li>
+        </ul>
+      </section>
+
+      <!-- Weekly Heatmap -->
+      <section class="section-block">
+        <h3 class="section-block__title">Weekly Overview</h3>
+        <div class="habit-heatmap" id="habit-heatmap">
+          <div class="heatmap-placeholder">Heatmap loads with data</div>
+        </div>
+      </section>
+
+    </section>
+
+    <!-- ==================== PAGE: GOALS ==================== -->
+    <section class="page" id="page-goals" data-page="goals">
+
+      <div class="page-header">
+        <h2 class="page-header__title">Goals</h2>
+      </div>
+
+      <!-- Add Goal Form -->
+      <form class="form-card" id="form-goal" autocomplete="off">
+        <h3 class="form-card__title">New Goal</h3>
+
+        <div class="form-row form-row--2col">
+          <div class="form-group">
+            <label for="input-goal-type">Type</label>
+            <select id="input-goal-type">
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="input-goal-title">Title</label>
+            <input type="text" id="input-goal-title" placeholder="e.g. Run 5km">
+          </div>
+        </div>
+
+        <div class="form-row form-row--2col">
+          <div class="form-group">
+            <label for="input-goal-target">Target Value</label>
+            <input type="number" id="input-goal-target" inputmode="decimal" step="0.1" min="0" placeholder="10">
+          </div>
+          <div class="form-group">
+            <label for="input-goal-deadline">Deadline</label>
+            <input type="date" id="input-goal-deadline">
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn--primary">Add Goal</button>
+      </form>
+
+      <!-- Active Goals -->
+      <section class="section-block">
+        <h3 class="section-block__title">Active Goals</h3>
+        <ul class="goals-list" id="goals-active">
+          <li class="empty-state">No active goals. Set one above.</li>
+        </ul>
+      </section>
+
+      <!-- Completed Goals -->
+      <section class="section-block">
+        <details class="collapsible">
+          <summary class="collapsible__header">
+            <h3 class="section-block__title">Completed Goals</h3>
+            <svg class="collapsible__chevron" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <ul class="goals-list" id="goals-completed">
+            <li class="empty-state">No completed goals yet.</li>
+          </ul>
+        </details>
+      </section>
+
+    </section>
+
+    <!-- ==================== PAGE: SETTINGS ==================== -->
+    <section class="page" id="page-settings" data-page="settings">
+
+      <div class="page-header">
+        <h2 class="page-header__title">Settings</h2>
+      </div>
+
+      <!-- Profile Section -->
+      <section class="section-block">
+        <h3 class="section-block__title">Profile</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="input-profile-name">Name</label>
+            <input type="text" id="input-profile-name" placeholder="Your name">
+          </div>
+        </div>
+        <div class="form-row form-row--2col">
+          <div class="form-group">
+            <label for="input-profile-height">Height (cm)</label>
+            <input type="number" id="input-profile-height" inputmode="numeric" min="100" max="250" placeholder="175">
+          </div>
+          <div class="form-group">
+            <label for="input-profile-weight-target">Weight Target (kg)</label>
+            <input type="number" id="input-profile-weight-target" inputmode="decimal" step="0.1" min="30" max="300" placeholder="70">
+          </div>
+        </div>
+        <div class="form-row form-row--2col">
+          <div class="form-group">
+            <label for="input-profile-calorie-target">Calorie Target (kcal)</label>
+            <input type="number" id="input-profile-calorie-target" inputmode="numeric" min="500" max="10000" placeholder="2000">
+          </div>
+          <div class="form-group">
+            <label for="input-profile-water-target">Water Target (ml)</label>
+            <input type="number" id="input-profile-water-target" inputmode="numeric" min="500" max="10000" placeholder="2500">
+          </div>
+        </div>
+        <button type="button" class="btn btn--primary" id="btn-save-profile">Save Profile</button>
+      </section>
+
+      <!-- Theme -->
+      <section class="section-block">
+        <h3 class="section-block__title">Appearance</h3>
+        <div class="setting-row">
+          <span class="setting-row__label">Dark Mode</span>
+          <label class="toggle" for="toggle-dark-mode">
+            <input type="checkbox" id="toggle-dark-mode">
+            <span class="toggle__slider"></span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Google Sheets Sync -->
+      <section class="section-block">
+        <h3 class="section-block__title">Google Sheets Sync</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="input-sheets-url">Apps Script Web App URL</label>
+            <input type="url" id="input-sheets-url" placeholder="https://script.google.com/macros/s/...">
+          </div>
+        </div>
+        <div class="sync-status">
+          <div class="sync-status__indicator">
+            <span class="sync-status__dot" id="sync-dot"></span>
+            <span class="sync-status__text" id="sync-status-text">Not connected</span>
+          </div>
+          <button type="button" class="btn btn--secondary btn--sm" id="btn-test-connection">Test Connection</button>
+        </div>
+      </section>
+
+      <!-- Sync Status -->
+      <section class="section-block">
+        <h3 class="section-block__title">Sync</h3>
+        <div class="setting-row">
+          <span class="setting-row__label">Pending items: <strong id="sync-pending-count">0</strong></span>
+          <button type="button" class="btn btn--secondary btn--sm" id="btn-sync-now" aria-label="Sync now">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            <span>Sync Now</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Data Export -->
+      <section class="section-block">
+        <h3 class="section-block__title">Data</h3>
+        <button type="button" class="btn btn--secondary" id="btn-export-json">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>Export All Data (JSON)</span>
+        </button>
+      </section>
+
+      <!-- Apple Health -->
+      <section class="section-block">
+        <details class="collapsible">
+          <summary class="collapsible__header">
+            <h3 class="section-block__title">Apple Health Integration</h3>
+            <svg class="collapsible__chevron" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="apple-health-guide">
+            <p>Use Apple Shortcuts to send health data to MyLife:</p>
+            <ol>
+              <li>Open the <strong>Shortcuts</strong> app on your iPhone.</li>
+              <li>Create a new shortcut with the <strong>"Get Health Sample"</strong> action for the metrics you want (weight, steps, heart rate, etc.).</li>
+              <li>Add a <strong>"Get Contents of URL"</strong> action pointed at your Google Apps Script URL.</li>
+              <li>Set the method to <strong>POST</strong> and pass the health data as JSON in the request body.</li>
+              <li>Set the shortcut to run as a <strong>Personal Automation</strong> (e.g., daily at 11 PM) to auto-sync your data.</li>
+            </ol>
+            <p>Alternatively, use the <strong>Health Auto Export</strong> app from the App Store for automated background syncing.</p>
+          </div>
+        </details>
+      </section>
+
+      <!-- Clear Cache -->
+      <section class="section-block">
+        <h3 class="section-block__title">Storage</h3>
+        <button type="button" class="btn btn--danger" id="btn-clear-cache">Clear Local Cache</button>
+      </section>
+
+      <!-- Version -->
+      <footer class="settings-footer">
+        <span class="settings-footer__version">MyLife v1.0.0</span>
+      </footer>
+
+    </section>
+
+  </main>
+
+  <!-- ============================== BOTTOM NAVIGATION ============================== -->
+  <nav class="bottom-nav" id="bottom-nav" aria-label="Main navigation">
+    <button class="bottom-nav__item active" id="nav-dashboard" data-page="dashboard" aria-label="Dashboard">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Dashboard</span>
+    </button>
+    <button class="bottom-nav__item" id="nav-track" data-page="track" aria-label="Track">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><line x1="9" y1="10" x2="15" y2="10"/><line x1="9" y1="14" x2="15" y2="14"/><line x1="9" y1="18" x2="13" y2="18"/></svg>
+      <span>Track</span>
+    </button>
+    <button class="bottom-nav__item" id="nav-habits" data-page="habits" aria-label="Habits">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      <span>Habits</span>
+    </button>
+    <button class="bottom-nav__item" id="nav-goals" data-page="goals" aria-label="Goals">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+      <span>Goals</span>
+    </button>
+    <button class="bottom-nav__item" id="nav-settings" data-page="settings" aria-label="Settings">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span>Settings</span>
+    </button>
+  </nav>
+
+  <!-- ============================== MODALS ============================== -->
+
+  <!-- Quick Water Modal -->
+  <div class="modal-overlay" id="modal-water" role="dialog" aria-modal="true" aria-labelledby="modal-water-title">
+    <div class="modal">
+      <div class="modal__header">
+        <h3 class="modal__title" id="modal-water-title">Add Water</h3>
+        <button class="modal__close" data-close-modal="modal-water" aria-label="Close">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal__body">
+        <div class="water-presets">
+          <button type="button" class="btn btn--preset" data-water="250">250 ml</button>
+          <button type="button" class="btn btn--preset" data-water="500">500 ml</button>
+          <button type="button" class="btn btn--preset" data-water="750">750 ml</button>
+        </div>
+        <div class="form-group">
+          <label for="input-water-custom">Custom amount (ml)</label>
+          <input type="number" id="input-water-custom" inputmode="numeric" min="1" max="5000" placeholder="Enter ml">
+        </div>
+      </div>
+      <div class="modal__footer">
+        <button type="button" class="btn btn--secondary" data-close-modal="modal-water">Cancel</button>
+        <button type="button" class="btn btn--primary" id="btn-save-water">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Weight Modal -->
+  <div class="modal-overlay" id="modal-weight" role="dialog" aria-modal="true" aria-labelledby="modal-weight-title">
+    <div class="modal">
+      <div class="modal__header">
+        <h3 class="modal__title" id="modal-weight-title">Log Weight</h3>
+        <button class="modal__close" data-close-modal="modal-weight" aria-label="Close">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal__body">
+        <div class="form-group">
+          <label for="input-quick-weight">Weight (kg)</label>
+          <input type="number" id="input-quick-weight" inputmode="decimal" step="0.1" min="20" max="300" placeholder="70.0">
+        </div>
+      </div>
+      <div class="modal__footer">
+        <button type="button" class="btn btn--secondary" data-close-modal="modal-weight">Cancel</button>
+        <button type="button" class="btn btn--primary" id="btn-save-quick-weight">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Meal Modal -->
+  <div class="modal-overlay" id="modal-meal" role="dialog" aria-modal="true" aria-labelledby="modal-meal-title">
+    <div class="modal">
+      <div class="modal__header">
+        <h3 class="modal__title" id="modal-meal-title">Quick Meal</h3>
+        <button class="modal__close" data-close-modal="modal-meal" aria-label="Close">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal__body">
+        <div class="form-group">
+          <label for="input-quick-meal-type">Meal</label>
+          <select id="input-quick-meal-type">
+            <option value="breakfast">Breakfast</option>
+            <option value="lunch">Lunch</option>
+            <option value="dinner">Dinner</option>
+            <option value="snack">Snack</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="input-quick-food-name">Food Name</label>
+          <input type="text" id="input-quick-food-name" placeholder="What did you eat?">
+        </div>
+        <div class="form-row form-row--2col">
+          <div class="form-group">
+            <label for="input-quick-meal-calories">Calories</label>
+            <input type="number" id="input-quick-meal-calories" inputmode="numeric" min="0" max="5000" placeholder="250">
+          </div>
+          <div class="form-group">
+            <label for="input-quick-meal-protein">Protein (g)</label>
+            <input type="number" id="input-quick-meal-protein" inputmode="decimal" step="0.1" min="0" max="500" placeholder="20">
+          </div>
+        </div>
+      </div>
+      <div class="modal__footer">
+        <button type="button" class="btn btn--secondary" data-close-modal="modal-meal">Cancel</button>
+        <button type="button" class="btn btn--primary" id="btn-save-quick-meal">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Habit Add/Edit Modal -->
+  <div class="modal-overlay" id="modal-habit" role="dialog" aria-modal="true" aria-labelledby="modal-habit-title">
+    <div class="modal">
+      <div class="modal__header">
+        <h3 class="modal__title" id="modal-habit-title">Add Habit</h3>
+        <button class="modal__close" data-close-modal="modal-habit" aria-label="Close">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal__body">
+        <form id="form-habit" autocomplete="off">
+          <div class="form-group">
+            <label for="input-habit-name">Habit Name</label>
+            <input type="text" id="input-habit-name" placeholder="e.g. Drink 8 glasses of water" required>
+          </div>
+          <div class="form-row form-row--2col">
+            <div class="form-group">
+              <label for="input-habit-icon">Icon</label>
+              <div class="emoji-picker-mini" id="emoji-picker-mini">
+                <button type="button" class="emoji-btn selected" data-emoji="&#x2705;">&#x2705;</button>
+                <button type="button" class="emoji-btn" data-emoji="&#x1F4AA;">&#x1F4AA;</button>
+                <button type="button" class="emoji-btn" data-emoji="&#x1F4A7;">&#x1F4A7;</button>
+                <button type="button" class="emoji-btn" data-emoji="&#x1F4D6;">&#x1F4D6;</button>
+                <button type="button" class="emoji-btn" data-emoji="&#x1F3C3;">&#x1F3C3;</button>
+                <button type="button" class="emoji-btn" data-emoji="&#x1F9D8;">&#x1F9D8;</button>
+                <button type="button" class="emoji-btn" data-emoji="&#x1F34E;">&#x1F34E;</button>
+                <button type="button" class="emoji-btn" data-emoji="&#x1F4A4;">&#x1F4A4;</button>
+                <button type="button" class="emoji-btn" data-emoji="&#x2764;">&#x2764;</button>
+                <button type="button" class="emoji-btn" data-emoji="&#x1F3AF;">&#x1F3AF;</button>
+                <button type="button" class="emoji-btn" data-emoji="&#x1F5D2;">&#x1F5D2;</button>
+                <button type="button" class="emoji-btn" data-emoji="&#x1F48A;">&#x1F48A;</button>
+              </div>
+              <input type="hidden" id="input-habit-icon" value="&#x2705;">
+            </div>
+            <div class="form-group">
+              <label for="input-habit-category">Category</label>
+              <select id="input-habit-category">
+                <option value="health">Health</option>
+                <option value="fitness">Fitness</option>
+                <option value="nutrition">Nutrition</option>
+                <option value="mindfulness">Mindfulness</option>
+                <option value="productivity">Productivity</option>
+                <option value="social">Social</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="input-habit-frequency">Target Frequency</label>
+            <select id="input-habit-frequency">
+              <option value="daily">Daily</option>
+              <option value="weekdays">Weekdays</option>
+              <option value="weekends">Weekends</option>
+              <option value="3x-week">3x per week</option>
+              <option value="custom">Custom</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal__footer">
+        <button type="button" class="btn btn--secondary" data-close-modal="modal-habit">Cancel</button>
+        <button type="button" class="btn btn--primary" id="btn-save-habit">Save Habit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Goal Add Modal -->
+  <div class="modal-overlay" id="modal-goal" role="dialog" aria-modal="true" aria-labelledby="modal-goal-title">
+    <div class="modal">
+      <div class="modal__header">
+        <h3 class="modal__title" id="modal-goal-title">Add Goal</h3>
+        <button class="modal__close" data-close-modal="modal-goal" aria-label="Close">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal__body">
+        <div class="form-group">
+          <label for="input-modal-goal-type">Type</label>
+          <select id="input-modal-goal-type">
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="input-modal-goal-title">Title</label>
+          <input type="text" id="input-modal-goal-title" placeholder="e.g. Lose 5kg">
+        </div>
+        <div class="form-row form-row--2col">
+          <div class="form-group">
+            <label for="input-modal-goal-target">Target Value</label>
+            <input type="number" id="input-modal-goal-target" inputmode="decimal" step="0.1" min="0" placeholder="10">
+          </div>
+          <div class="form-group">
+            <label for="input-modal-goal-deadline">Deadline</label>
+            <input type="date" id="input-modal-goal-deadline">
+          </div>
+        </div>
+      </div>
+      <div class="modal__footer">
+        <button type="button" class="btn btn--secondary" data-close-modal="modal-goal">Cancel</button>
+        <button type="button" class="btn btn--primary" id="btn-save-modal-goal">Add Goal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Medication Add Modal -->
+  <div class="modal-overlay" id="modal-medication" role="dialog" aria-modal="true" aria-labelledby="modal-medication-title">
+    <div class="modal">
+      <div class="modal__header">
+        <h3 class="modal__title" id="modal-medication-title">Add Medication</h3>
+        <button class="modal__close" data-close-modal="modal-medication" aria-label="Close">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal__body">
+        <div class="form-group">
+          <label for="input-med-name">Medication Name</label>
+          <input type="text" id="input-med-name" placeholder="e.g. Vitamin D">
+        </div>
+        <div class="form-row form-row--2col">
+          <div class="form-group">
+            <label for="input-med-dosage">Dosage</label>
+            <input type="text" id="input-med-dosage" placeholder="e.g. 1000 IU">
+          </div>
+          <div class="form-group">
+            <label for="input-med-time">Time</label>
+            <input type="time" id="input-med-time" value="08:00">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="checkbox-label" for="input-med-taken">
+            <input type="checkbox" id="input-med-taken">
+            <span>Taken today</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal__footer">
+        <button type="button" class="btn btn--secondary" data-close-modal="modal-medication">Cancel</button>
+        <button type="button" class="btn btn--primary" id="btn-save-medication">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Appointment Add Modal -->
+  <div class="modal-overlay" id="modal-appointment" role="dialog" aria-modal="true" aria-labelledby="modal-appointment-title">
+    <div class="modal">
+      <div class="modal__header">
+        <h3 class="modal__title" id="modal-appointment-title">Add Appointment</h3>
+        <button class="modal__close" data-close-modal="modal-appointment" aria-label="Close">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal__body">
+        <div class="form-group">
+          <label for="input-apt-title">Title</label>
+          <input type="text" id="input-apt-title" placeholder="e.g. Doctor checkup">
+        </div>
+        <div class="form-row form-row--2col">
+          <div class="form-group">
+            <label for="input-apt-date">Date</label>
+            <input type="date" id="input-apt-date">
+          </div>
+          <div class="form-group">
+            <label for="input-apt-time">Time</label>
+            <input type="time" id="input-apt-time">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="input-apt-location">Location</label>
+          <input type="text" id="input-apt-location" placeholder="e.g. City Hospital">
+        </div>
+        <div class="form-group">
+          <label for="input-apt-notes">Notes</label>
+          <textarea id="input-apt-notes" rows="2" placeholder="Additional details..."></textarea>
+        </div>
+      </div>
+      <div class="modal__footer">
+        <button type="button" class="btn btn--secondary" data-close-modal="modal-appointment">Cancel</button>
+        <button type="button" class="btn btn--primary" id="btn-save-appointment">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Dialog -->
+  <div class="modal-overlay" id="modal-confirm" role="alertdialog" aria-modal="true" aria-labelledby="modal-confirm-title" aria-describedby="modal-confirm-message">
+    <div class="modal modal--sm">
+      <div class="modal__header">
+        <h3 class="modal__title" id="modal-confirm-title">Confirm</h3>
+      </div>
+      <div class="modal__body">
+        <p id="modal-confirm-message">Are you sure?</p>
+      </div>
+      <div class="modal__footer">
+        <button type="button" class="btn btn--secondary" id="btn-confirm-cancel">Cancel</button>
+        <button type="button" class="btn btn--danger" id="btn-confirm-ok">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== SCRIPTS ============================== -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <script src="data.js"></script>
+  <script src="charts.js"></script>
+  <script src="food.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>
