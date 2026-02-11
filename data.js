@@ -101,7 +101,7 @@
     _db: null,
 
     /** @type {string|null} Google Apps Script deployment URL */
-    _scriptUrl: null,
+    _scriptUrl: 'https://script.google.com/macros/s/AKfycbxmROAfZyDkEFUsWcqwIqAflx9UE8N37kywWDmqavqRCr_f5ph0Q__x6oIA-1ZXdvwysw/exec',
 
     /** @type {number|null} setInterval handle for background sync */
     _syncInterval: null,
